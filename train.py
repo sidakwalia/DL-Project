@@ -13,7 +13,7 @@ import traceback
 import os
 import argparse
 
-from models import ResNet, BasicBlock
+from models import ResNet, BasicBlock, ResNet9
 
 
 # calculate block count per residual layer
@@ -26,7 +26,8 @@ def get_num_blocks(depth: int) -> list:
 
 def make_model(k = 2, d = 82):
     # instantiate model
-    model = ResNet(BasicBlock, get_num_blocks(d), k = k)
+    # model = ResNet(BasicBlock, get_num_blocks(d), k = k)
+    model = ResNet9(3,10)
     device = "cpu"
     if torch.cuda.is_available():
         device = "cuda"
@@ -45,9 +46,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="DL Mini Project")
     parser.add_argument('--lr', default=0.01, type=float, help='learning rate')
     parser.add_argument('--resume', '-r', action='store_true', help='resume from latest checkpoint')
-    parser.add_argument('--epochs', '-e', type=int, default=300, help='no. of epochs')
-    parser.add_argument('-w','--num_workers',type=int,default=12,help='number of workers')
-    parser.add_argument('-b','--batch_size',type=int,default=128,help='batch_size')
+    parser.add_argument('--epochs', '-e', type=int, default=50, help='no. of epochs')
+    parser.add_argument('-w','--num_workers',type=int,default=16,help='number of workers')
+    parser.add_argument('-b','--batch_size',type=int,default=256,help='batch_size')
     args = parser.parse_args()   
 
     # hyperparams
