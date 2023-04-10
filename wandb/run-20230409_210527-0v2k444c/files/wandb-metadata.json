@@ -1,0 +1,285 @@
+{
+    "os": "Linux-4.18.0-372.26.1.el8_6.x86_64-x86_64-with-glibc2.35",
+    "python": "3.11.2",
+    "heartbeatAt": "2023-04-10T01:05:28.234380",
+    "startedAt": "2023-04-10T01:05:27.800494",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/home/mm12318/DL_Class/DL-Project/train.py",
+    "codePath": "train.py",
+    "git": {
+        "remote": "git@github.com:sidakwalia/DL-Project.git",
+        "commit": "19e8a0fd2b2e90354c3c827bbd2d40227c81a2e6"
+    },
+    "email": null,
+    "root": "/home/mm12318/DL_Class/DL-Project",
+    "host": "gr012.hpc.nyu.edu",
+    "username": "mm12318",
+    "executable": "/scratch/mm12318/miniconda/envs/DL/bin/python",
+    "cpu_count": 48,
+    "cpu_count_logical": 48,
+    "cpu_freq": {
+        "current": 3857.098375,
+        "min": 3900.0,
+        "max": 3900.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 3500.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3500.007,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3499.999,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3500.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3458.692,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        },
+        {
+            "current": 3900.0,
+            "min": 3900.0,
+            "max": 3900.0
+        }
+    ],
+    "disk": {
+        "total": 0.9530258178710938,
+        "used": 0.001270294189453125
+    },
+    "gpu": "Quadro RTX 8000",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "Quadro RTX 8000",
+            "memory_total": 48318382080
+        }
+    ],
+    "memory": {
+        "total": 377.07361602783203
+    }
+}
