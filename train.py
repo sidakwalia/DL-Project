@@ -12,9 +12,11 @@ from time import time
 import traceback
 import os
 import argparse
+import wandb
 
 from models import ResNet, BasicBlock, ResNet9
 
+wandb.login()
 
 # calculate block count per residual layer
 def block_count(depth: int) -> int:
@@ -46,7 +48,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="DL Mini Project")
     parser.add_argument('--lr', default=0.01, type=float, help='learning rate')
     parser.add_argument('--resume', '-r', action='store_true', help='resume from latest checkpoint')
-    parser.add_argument('--epochs', '-e', type=int, default=50, help='no. of epochs')
+    parser.add_argument('--epochs', '-e', type=int, default=100, help='no. of epochs')
     parser.add_argument('-w','--num_workers',type=int,default=16,help='number of workers')
     parser.add_argument('-b','--batch_size',type=int,default=256,help='batch_size')
     args = parser.parse_args()   
@@ -55,6 +57,8 @@ if __name__ == "__main__":
     num_workers = args.num_workers
     batch_size = args.batch_size
     n_epochs = args.epochs
+
+    
 
     # define transform
     transform_train = transforms.Compose([
@@ -111,6 +115,24 @@ if __name__ == "__main__":
     test_loss_list = list()
     train_acc_list = list()
     test_acc_list = list()
+
+    run  = wandb.init(
+        project="ResNet9 reduced DL_midterm",
+        config = {
+            "loss": print(criterion),
+            "optim": print(optimizer),
+            "scheduler": print(scheduler),
+            "lr": args.lr,
+            "momentum": 0.9,
+            "weight_decay": 5e-4,
+            "resume": args.resume,
+            "epochs": args.epochs,
+            "n_worker": args.num_workers,
+            "batch_size": args.batch_size,
+            "overall_params": sum(p.numel() for p in model.parameters()),
+            "trainable_params": sum(p.numel() for p in model.parameters() if p.requires_grad)
+        }
+    )
 
     start = time()
     for epoch in range(1, n_epochs + 1):
@@ -173,6 +195,13 @@ if __name__ == "__main__":
 
         # display stats
         print('Epoch: {}/{} \tTrain Loss: {:.6f} \tTest Loss: {:.6f} \tTrain Acc: {:.2f}% \tTest Acc: {:.2f}%'.format(epoch, n_epochs, train_loss, test_loss, train_acc, test_acc))
+        
+        wandb.log({
+            "train_loss": train_loss,
+            "train_acc": train_acc,
+            "test_loss": test_loss,
+            "test_acc": test_acc
+        })
 
         # save best model
         if test_loss <= test_loss_min:
@@ -186,31 +215,6 @@ if __name__ == "__main__":
     end = time()
 
     print('Time elapsed: {} hours'.format((end - start) / 3600.0))
-
-    model = make_model()
-
-    # test model
-    test_loss = 0
-    total_correct = 0
-    total = 0
-
-    model.eval()
-    for data, target in test_loader:
-        if torch.cuda.is_available():
-            data, target = data.cuda(), target.cuda()
-        with torch.no_grad():
-            output = model(data)
-            loss = criterion(output, target)
-            test_loss += loss.item() * data.size(0)
-            # calculate accuracies
-            _, pred = torch.max(output, 1)
-            correct_tensor = pred.eq(target.data.view_as(pred))
-            correct = np.squeeze(correct_tensor.numpy()) if not torch.cuda.is_available() else np.squeeze(correct_tensor.cpu().numpy())
-            total_correct += np.sum(correct)
-            total += correct.shape[0]
-
-    # calculate overall accuracy
-    print('Model accuracy on test dataset: {:.2f}%'.format(total_correct / total * 100))
 
 
     if not os.path.isdir('results'):
@@ -243,3 +247,5 @@ if __name__ == "__main__":
         f.write('train_loss, test_loss, train_acc, test_acc\n')
         for i in range(n_epochs):
             f.write('{}, {}, {}, {}\n'.format(train_loss_list[i], test_loss_list[i], train_acc_list[i], test_acc_list[i]))
+    
+    wandb.finish()
