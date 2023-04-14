@@ -1,4 +1,7 @@
-This repository contains an implementation of the ResNet model for image classification using PyTorch. The model is trained on the CIFAR-10 dataset and achieves an accuracy of 90% on the test set.
+This repository contains an implementation of the ResNet model for image classification using PyTorch. The model is trained on the CIFAR-10 dataset under 5 million parameters.
+
+Best Accuracy: 93.9% on test dataset
+Parameters: 
 
 Table of Contents
 Getting Started
