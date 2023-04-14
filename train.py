@@ -15,6 +15,9 @@ import argparse
 
 from models import ResNet, BasicBlock
 
+import wandb
+wandb.login()
+import torch.optim as optim
 
 # calculate block count per residual layer
 def block_count(depth: int) -> int:
@@ -38,9 +41,8 @@ def make_model(k = 2, d = 82):
 
     return model
 
-
-if __name__ == "__main__":
-    
+def train_with():
+    # hyperparams
 
     parser = argparse.ArgumentParser(description="DL Mini Project")
     parser.add_argument('--lr', default=0.01, type=float, help='learning rate')
@@ -48,13 +50,18 @@ if __name__ == "__main__":
     parser.add_argument('--epochs', '-e', type=int, default=300, help='no. of epochs')
     parser.add_argument('-w','--num_workers',type=int,default=12,help='number of workers')
     parser.add_argument('-b','--batch_size',type=int,default=128,help='batch_size')
-    args = parser.parse_args()   
-
-    # hyperparams
+    args = parser.parse_args() 
     num_workers = args.num_workers
     batch_size = args.batch_size
     n_epochs = args.epochs
 
+
+    wandb.init(project="dl_mini_project",name="experiment")
+    config = wandb.config
+    lr = config.learning_rate
+    optimizer = config.optimizer
+    print("the learning rate is--",lr ,"the optimizer is----",optimizer)
+    model_name=str(optimizer)+"_"+str(lr)
     # define transform
     transform_train = transforms.Compose([
         transforms.RandomCrop(32, padding = 4),
@@ -96,11 +103,14 @@ if __name__ == "__main__":
 
 
     model = make_model()
-    summary(model, (3, 32, 32))
+    # summary(model, (3, 32, 32))
 
     # define loss function and optimizer
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(model.parameters(), lr = 0.01, momentum = 0.9, weight_decay = 5e-4)
+    if optimizer=="sgd":
+        optimizer = optim.SGD(model.parameters(), lr = lr)
+    elif optimizer=="adam":
+        optimizer=optim.Adam(model.parameters(), lr=lr)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max = n_epochs)
 
     # define training loop
@@ -169,6 +179,7 @@ if __name__ == "__main__":
         test_loss_list.append(test_loss)
         train_acc_list.append(train_acc)
         test_acc_list.append(test_acc)
+        wandb.log({"train_loss": train_loss,"test_loss":test_loss,"train_acc":train_acc,"test_acc":test_acc})
 
         # display stats
         print('Epoch: {}/{} \tTrain Loss: {:.6f} \tTest Loss: {:.6f} \tTrain Acc: {:.2f}% \tTest Acc: {:.2f}%'.format(epoch, n_epochs, train_loss, test_loss, train_acc, test_acc))
@@ -177,10 +188,10 @@ if __name__ == "__main__":
         if test_loss <= test_loss_min:
             print('Test loss decreased ({:.6f} --> {:.6f}. Saving model...'.format(test_loss_min, test_loss))
 
-            if not os.path.isdir('save_model'):
-                os.mkdir('save_model')
+            if not os.path.isdir('best_models'):
+                os.mkdir('best_models')
 
-            torch.save(model.state_dict(), './save_model/resnet_best.pt')
+            torch.save(model.state_dict(), f'./best_models/{model_name}.pt')
             test_loss_min = test_loss
     end = time()
 
@@ -212,8 +223,8 @@ if __name__ == "__main__":
     print('Model accuracy on test dataset: {:.2f}%'.format(total_correct / total * 100))
 
 
-    if not os.path.isdir('results'):
-        os.mkdir('results')
+    if not os.path.isdir(f'results{model_name}'):
+        os.mkdir(f'results{model_name}')
 
 
     # plot and save figures
@@ -224,7 +235,7 @@ if __name__ == "__main__":
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
     plt.legend(['Train Loss', 'Test Loss'])
-    plt.savefig('./results/train_test_loss.png')
+    plt.savefig(f'./results/train_test_loss{model_name}.png')
     plt.close()
 
     plt.figure()
@@ -234,11 +245,38 @@ if __name__ == "__main__":
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
     plt.legend(['Train Accuracy', 'Test Accuracy'])
-    plt.savefig('./results/train_test_acc.png')
+    plt.savefig(f'./results/train_test_acc{model_name}.png')
     plt.close()
 
     # write training data to csv file
-    with open('./results/train_data.csv', 'w') as f:
+    with open(f'./results/train_data{model_name}.csv', 'w') as f:
         f.write('train_loss, test_loss, train_acc, test_acc\n')
         for i in range(n_epochs):
             f.write('{}, {}, {}, {}\n'.format(train_loss_list[i], test_loss_list[i], train_acc_list[i], test_acc_list[i]))
+
+
+if __name__ == "__main__":
+    
+  
+    sweep_config = {
+        'name': 'sweep_example',
+        'method': 'random',
+        'metric': {
+            'name': 'loss',
+            'goal': 'minimize'
+        },
+        'parameters': {
+            'learning_rate': {
+                'values': [0.01]
+            },
+            'optimizer': {
+                'values': [ 'sgd']
+            }
+        }
+    }
+    sweep_id = wandb.sweep(sweep_config)
+
+    wandb.agent(sweep_id,count=6, function=train_with)
+
+
+    
